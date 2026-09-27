@@ -1,0 +1,450 @@
+/* THE DOUBLE WIDE — a morning paper dressed like a pack of rolling papers */
+:root {
+  --pack: #e07a24;        /* pack orange */
+  --pack-dark: #b85a14;
+  --tobacco: #2e1c10;     /* desk / background */
+  --paper: #f5eedb;       /* cream leaf */
+  --paper-edge: #e6dcc0;
+  --ink: #1b1510;
+  --rust: #9c2a1c;
+  --muted: #6b5d4b;
+  --rule: #2a2118;
+}
+* { box-sizing: border-box; }
+html { background: var(--tobacco); }
+body {
+  margin: 0; padding: 18px 16px 40px; color: var(--ink);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,.05), transparent 40%),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.08) 0 2px, transparent 2px 7px), var(--tobacco);
+  font: 17px/1.5 "Old Standard TT", Georgia, serif;
+}
+a { color: var(--rust); }
+.pack {
+  max-width: 1080px; margin: 0 auto; background: var(--pack); border-radius: 14px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.55), inset 0 0 0 3px var(--pack-dark), inset 0 0 0 9px var(--pack), inset 0 0 0 11px var(--ink);
+  padding: 14px 14px 10px; position: relative; overflow: visible;
+}
+/* the gummed strip + the fold at the top of the pack */
+.gum {
+  margin: -14px -14px 12px; padding: 7px 10px; text-align: center; overflow: hidden; white-space: nowrap; border-radius: 14px 14px 0 0;
+  background: repeating-linear-gradient(45deg, rgba(255,255,255,.18) 0 6px, rgba(255,255,255,.08) 6px 12px), #c9a86a;
+  border-bottom: 2px dashed rgba(0,0,0,.35); color: rgba(40,25,10,.75);
+  font: 600 11px/1 Oswald, sans-serif; letter-spacing: .32em;
+}
+.cover {
+  display: grid; grid-template-columns: 110px 1fr 110px; align-items: center; gap: 14px;
+  padding: 10px 8px 14px; border-bottom: 3px solid var(--ink); color: #fff;
+}
+.seal { color: var(--ink); background: var(--paper); border-radius: 50%; padding: 6px; box-shadow: 0 0 0 3px var(--ink); }
+.seal svg { display: block; width: 100%; height: auto; }
+.flag { text-align: center; }
+.flag h1 {
+  margin: 2px 0 0; font: 400 clamp(44px, 8vw, 92px)/.95 "Abril Fatface", Georgia, serif; letter-spacing: .01em;
+  color: var(--paper); -webkit-text-stroke: 2px var(--ink); paint-order: stroke fill;
+  text-shadow: 4px 4px 0 var(--ink);
+}
+.est, .motto { font: 600 12px/1.2 Oswald, sans-serif; letter-spacing: .28em; color: var(--ink); text-transform: uppercase; }
+.motto { margin-top: 10px; font: italic 400 17px/1.2 "Old Standard TT", serif; letter-spacing: 0; text-transform: none; color: #2b1a0c; }
+.ear {
+  justify-self: end; text-align: center; background: var(--paper); color: var(--ink); border: 3px solid var(--ink);
+  border-radius: 8px; padding: 8px 10px; font: 600 13px/1.25 Oswald, sans-serif; text-transform: uppercase; letter-spacing: .08em;
+  transform: rotate(3deg);
+}
+.ear b { font-size: 22px; color: var(--rust); }
+.strip {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; margin: 8px 0;
+  font: 600 12px/1.6 Oswald, sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--ink);
+  border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 2px 4px;
+}
+/* the leaf (newsprint) */
+.paper {
+  background: linear-gradient(180deg, rgba(0,0,0,.02), transparent 30%), var(--paper);
+  border-radius: 6px; padding: 18px 20px 24px; box-shadow: inset 0 0 0 1px var(--paper-edge), 0 2px 0 var(--pack-dark);
+}
+h2 {
+  font: 700 15px/1.2 Oswald, sans-serif; letter-spacing: .22em; text-transform: uppercase; color: var(--rust);
+  margin: 0 0 8px; padding-bottom: 4px; border-bottom: 2px solid var(--rule);
+}
+h3 { font: 700 22px/1.15 "Old Standard TT", Georgia, serif; margin: 2px 0 6px; }
+p { margin: 0 0 .7em; }
+.small { font-size: 14px; color: var(--muted); }
+.front { display: grid; grid-template-columns: 1fr 300px; gap: 22px; padding-bottom: 16px; border-bottom: 4px double var(--rule); }
+.story.lead h3 { font: 400 clamp(30px, 4.6vw, 48px)/1.05 "Abril Fatface", Georgia, serif; margin-bottom: 10px; }
+.story.lead .dek { font-size: 20px; }
+.story.lead > p:first-of-type::first-letter, .story.lead .byline + p::first-letter {
+  float: left; font: 400 64px/.8 "Abril Fatface", serif; padding: 6px 8px 0 0; color: var(--rust);
+}
+.kicker { font: 600 12px/1 Oswald, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); margin-bottom: 4px; }
+.dek { font-style: italic; color: #3a2d20; }
+.byline { display: flex; align-items: center; gap: 8px; margin: 4px 0 8px; font: 600 12px/1 Oswald, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.mug {
+  width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex: none;
+  border: 2px solid var(--ink); filter: sepia(.35) contrast(1.05); background: var(--paper-edge);
+}
+.mug.sm { width: 38px; height: 38px; } .mug.xs { width: 26px; height: 26px; } .mug.lg { width: 84px; height: 84px; }
+.mug.mono { display: inline-grid; place-items: center; font: 700 18px/1 "Abril Fatface", serif; color: var(--ink); }
+.box { border: 2px solid var(--rule); padding: 12px 14px; background: rgba(255,255,255,.35); margin-bottom: 14px; }
+.wx-now { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+.wx-temp { font: 400 46px/1 "Abril Fatface", serif; color: var(--rust); }
+.wx { list-style: none; padding: 0; margin: 0 0 6px; font-size: 15px; }
+.wx li { border-top: 1px dotted var(--muted); padding: 3px 0; }
+.desk { padding: 16px 0 6px; border-bottom: 1px solid var(--rule); }
+.desk-name { font-size: 18px; text-align: center; border-bottom: 0; border-top: 3px solid var(--rule); padding-top: 6px; }
+.cols { column-count: 3; column-gap: 26px; column-rule: 1px solid rgba(42,33,24,.35); }
+.cols .story { break-inside: avoid; margin-bottom: 16px; }
+.lower { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; padding-top: 18px; }
+.blotter ul { list-style: none; padding: 0; margin: 0; font-size: 15px; }
+.blotter li { display: flex; gap: 8px; align-items: flex-start; border-top: 1px dotted var(--muted); padding: 5px 0; }
+.ad { display: flex; gap: 10px; align-items: flex-start; border-top: 1px dashed var(--muted); padding: 7px 0; font-size: 15px; }
+.ad .tag { font: 600 10px/1 Oswald, sans-serif; letter-spacing: .14em; text-transform: uppercase; background: var(--ink); color: var(--paper); padding: 2px 5px; margin-left: 4px; }
+.ad .ask { color: var(--rust); font-weight: 700; margin-top: 2px; }
+.jobs { background: repeating-linear-gradient(0deg, transparent 0 22px, rgba(156,42,28,.06) 22px 23px), rgba(255,255,255,.35); }
+.funnies { margin-top: 10px; padding: 14px; border: 3px solid var(--ink); background: #fffaf0; }
+.funnies h2 { text-align: center; font: 400 28px/1 "Abril Fatface", serif; letter-spacing: .04em; color: var(--ink); border: 0; text-transform: none; }
+.strip-title { text-align: center; font: 600 13px/1 Oswald, sans-serif; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 10px; color: var(--rust); }
+.panels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.panel { border: 3px solid var(--ink); background: #fff; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; min-height: 170px; }
+.panel-art { flex: 1; display: grid; place-items: center; }
+.caption { font: 700 15px/1.25 "Comic Sans MS", "Old Standard TT", cursive; text-align: center; background: #fff7c2; border: 2px solid var(--ink); border-radius: 12px; padding: 6px 8px; }
+.joke { text-align: center; font-style: italic; margin: 10px 0 0; }
+.almanac ul { columns: 2; list-style: none; padding: 0; margin: 0; font-size: 15px; }
+.almanac li { break-inside: avoid; border-top: 1px dotted var(--muted); padding: 3px 0; }
+.archive { font-size: 19px; line-height: 2; }
+.flap {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 10px; padding: 8px 6px 2px;
+  border-top: 2px dashed rgba(0,0,0,.4); font: 600 12px/1.4 Oswald, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--ink);
+}
+.flap a { color: var(--ink); }
+.pager {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 12px 0 2px;
+}
+.pager button#prev, .pager button#next {
+  width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--ink); background: var(--paper); color: var(--ink);
+  font: 400 34px/1 "Abril Fatface", serif; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); flex: none;
+}
+.pager button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.where { text-align: center; font: 600 13px/1.4 Oswald, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--ink); }
+.dots { display: flex; gap: 6px; justify-content: center; margin-top: 5px; }
+.dots button { width: 11px; height: 11px; padding: 0; border-radius: 50%; border: 2px solid var(--ink); background: transparent; cursor: pointer; }
+.dots button.on { background: var(--ink); }
+.center { text-align: center; }
+.desk { padding: 4px 0 6px; }
+.funnies { margin-top: 4px; }
+/* phones & tablets: swipe to pull papers (no arrow buttons); desktop: arrow buttons */
+.swipe-hint { display: none; margin-top: 6px; font-size: 11px; letter-spacing: .14em; opacity: .75; }
+@media (hover: none) and (pointer: coarse) {
+  .pager { justify-content: center; }
+  .pager button#prev, .pager button#next { display: none; }
+  .swipe-hint { display: block; }
+}
+@media (max-width: 860px) {
+  .front { grid-template-columns: 1fr; }
+  .cols { column-count: 2; }
+  .lower { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  body { padding: 10px 8px 30px; font-size: 16px; }
+  .cover { grid-template-columns: 64px 1fr; }
+  .ear { display: none; }
+  .cols { column-count: 1; }
+  .panels { grid-template-columns: 1fr; }
+  .almanac ul { columns: 1; }
+  .paper, .page-in { padding: 20px 12px 18px; }
+}
+
+/* ---- the flipbook (turn.js) inside the pack: the pages keep the classic layout ---- */
+.book-wrap { width: 100%; }
+#flipbook { margin: 0 auto; }
+#flipbook .pg { background: var(--paper); border-radius: 3px 3px 6px 6px; }
+.page-in { position: relative; height: 100%; overflow-y: auto; overflow-x: hidden; padding: 26px 20px 24px;
+  background: linear-gradient(180deg, rgba(0,0,0,.035), transparent 28%), var(--paper); border-radius: 3px 3px 6px 6px;
+  box-shadow: inset 0 0 0 1px var(--paper-edge); -webkit-overflow-scrolling: touch; }
+.page-in::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 9px; border-radius: 3px 3px 0 0;
+  background: repeating-linear-gradient(90deg, rgba(201,168,106,.55) 0 10px, rgba(201,168,106,.35) 10px 14px);
+  border-bottom: 1px dashed rgba(107,93,75,.45); }
+.page-in > .desk:first-child { border-bottom: 0; }
+.noturn #flipbook .pg { position: static; height: auto; margin-bottom: 16px; }
+.noturn .page-in { height: auto; }
+
+/* ---- hard covers: the outside of the rolling-paper pack ---- */
+.page-in.hardcover { background: var(--pack); color: #fff; padding: 0; display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: inset 0 0 0 4px var(--pack-dark), inset 0 0 0 10px var(--pack), inset 0 0 0 12px var(--ink); }
+.page-in.hardcover::before { display: none; }
+.hardcover .gum { margin: 0; border-radius: 3px 3px 0 0; }
+.pc-top { display: flex; justify-content: space-between; align-items: flex-start; padding: 26px 30px 0; }
+.hardcover .seal { width: 110px; }
+.hardcover .ear { transform: rotate(4deg); }
+.hardcover .flag { text-align: center; padding: 20px 18px 6px; margin-top: auto; }
+.hardcover .flag h1 { margin: 6px 0 0; font: 400 clamp(56px, 10vw, 118px)/.9 "Abril Fatface", Georgia, serif;
+  color: var(--paper); -webkit-text-stroke: 2px var(--ink); paint-order: stroke fill; text-shadow: 5px 5px 0 var(--ink); }
+.hardcover .motto { margin-top: 14px; font-size: 20px; }
+.pc-band { display: flex; justify-content: space-around; margin: 18px 0 0; padding: 9px 6px; background: var(--ink); color: var(--paper);
+  font: 700 13px/1 Oswald, sans-serif; letter-spacing: .24em; }
+.pc-teaser { margin: 18px auto 0; width: min(560px, calc(100% - 44px)); background: var(--paper); color: var(--ink); border: 3px solid var(--ink);
+  padding: 12px 14px; box-shadow: 4px 4px 0 var(--ink); }
+.pc-teaser b { font: 700 20px/1.2 "Old Standard TT", serif; }
+.pc-open { margin: auto 26px 24px; padding-top: 14px; text-align: right; font: 700 15px/1 Oswald, sans-serif; letter-spacing: .2em; color: var(--ink); text-transform: uppercase; }
+.pb-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 24px; text-align: center; color: var(--ink); }
+.pb-title { font: 400 44px/1 "Abril Fatface", serif; color: var(--paper); -webkit-text-stroke: 1.5px var(--ink); border: 0; letter-spacing: 0; text-transform: none; }
+.pb-warn { max-width: 340px; font: 600 11px/1.5 Oswald, sans-serif; letter-spacing: .1em; text-transform: uppercase; border: 2px solid var(--ink); padding: 8px; }
+.barcode { width: 200px; height: 60px; background: var(--paper) repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 4px, var(--ink) 4px 5px, transparent 5px 8px, var(--ink) 8px 11px, transparent 11px 12px); border: 6px solid var(--paper); }
+.pb-code { font: 600 12px/1 Oswald, sans-serif; letter-spacing: .2em; }
+.hardcover a { color: var(--ink); font-weight: 700; }
+
+/* ---- weather: 3-day forecast ---- */
+.wx-bigicon { font-size: 34px; }
+.wx-3day { border-top: 2px solid var(--rule); padding-top: 6px; margin-bottom: 6px; }
+.wx-label { font: 600 11px/1 Oswald, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.wx-days { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.wx-day { text-align: center; border: 1.5px solid var(--rule); background: rgba(255,255,255,.5); padding: 6px 4px; }
+.wx-dname { font: 700 12px/1 Oswald, sans-serif; letter-spacing: .14em; }
+.wx-icon { font-size: 26px; line-height: 1.3; }
+.wx-hl { font-size: 14px; } .wx-hl b { font-size: 18px; color: var(--rust); }
+.wx-short { font-size: 11px; line-height: 1.2; color: var(--muted); margin-top: 2px; }
+.wx-pop { font-size: 11px; margin-top: 2px; }
+
+/* ---- clickable job listings + pop-up ---- */
+button.job { width: 100%; font: inherit; color: inherit; background: rgba(255,255,255,.55); border: 2px solid var(--rule); border-radius: 4px;
+  margin: 8px 0; padding: 10px; cursor: pointer; box-shadow: 3px 3px 0 var(--rule); transition: transform .1s, box-shadow .1s; text-align: left; }
+button.job:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--rule); background: #fffaf0; }
+.job-status { margin-top: 6px; font: 600 11px/1.3 Oswald, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+button.job.st-approved { border-color: #2f6b2a; } button.job.st-approved .job-status { color: #2f6b2a; }
+button.job.st-done { opacity: .7; } button.job.st-dismissed { opacity: .55; }
+.ask { color: var(--rust); font-weight: 700; margin-top: 2px; }
+.modal { position: fixed; inset: 0; z-index: 100; background: rgba(20,12,6,.7); display: grid; place-items: center; padding: 16px; }
+.modal[hidden] { display: none; }
+.modal-card { position: relative; width: min(460px, 100%); background: var(--paper); border: 3px solid var(--ink); border-radius: 8px; padding: 18px; box-shadow: 6px 6px 0 #000; }
+.modal-x { position: absolute; right: 8px; top: 6px; border: 0; background: none; font: 400 28px/1 serif; cursor: pointer; color: var(--ink); }
+.jm-head { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+.jm-actions { display: grid; gap: 8px; margin-top: 12px; }
+.btn { font: 600 14px/1.2 Oswald, sans-serif; letter-spacing: .06em; padding: 11px 12px; border: 2px solid var(--ink); border-radius: 6px;
+  background: #fff; color: var(--ink); cursor: pointer; text-align: left; box-shadow: 3px 3px 0 var(--ink); }
+.btn.go { background: #2f6b2a; color: #fff; } .btn.ghost { background: transparent; box-shadow: none; }
+
+/* ---- The Sunday Funnies ---- */
+.page-in.comic-page { background: #fffdf5; }
+.sunday-head { text-align: center; font: 400 44px/1 Bangers, "Abril Fatface", cursive; letter-spacing: .06em; color: #e5322d;
+  -webkit-text-stroke: 1.5px var(--ink); paint-order: stroke fill; text-shadow: 3px 3px 0 var(--ink); }
+.sunday-head span { display: block; font-size: 16px; color: var(--ink); -webkit-text-stroke: 0; text-shadow: none; letter-spacing: .3em; }
+.comic-title { text-align: center; margin: 4px 0 12px; font: 400 24px/1.1 Bangers, cursive; letter-spacing: .08em; color: var(--ink); }
+.cpanels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.cpanel { position: relative; min-height: 220px; border: 3px solid var(--ink); background-color: var(--bg);
+  background-image: radial-gradient(rgba(0,0,0,.18) 1.2px, transparent 1.4px); background-size: 7px 7px;
+  display: flex; flex-direction: column; padding: 6px; overflow: hidden; }
+.narr { align-self: flex-start; max-width: 90%; background: #fff3a8; border: 2px solid var(--ink); padding: 3px 6px;
+  font: 700 12px/1.25 "Comic Sans MS", "Comic Neue", cursive; text-transform: uppercase; box-shadow: 2px 2px 0 var(--ink); }
+.sfx { position: absolute; right: 8px; top: 30px; transform: rotate(-12deg); font: 400 30px/1 Bangers, cursive; color: #fff; letter-spacing: .06em;
+  -webkit-text-stroke: 2px #e5322d; paint-order: stroke fill; text-shadow: 3px 3px 0 var(--ink); }
+.stage { margin-top: auto; display: flex; justify-content: space-around; align-items: flex-end; gap: 6px; }
+.actor { display: flex; flex-direction: column; align-items: center; gap: 6px; max-width: 60%; }
+.bubble { position: relative; background: #fff; border: 2.5px solid var(--ink); border-radius: 18px; padding: 6px 9px;
+  font: 700 13px/1.25 "Comic Sans MS", "Comic Neue", cursive; text-align: center; box-shadow: 2px 2px 0 rgba(0,0,0,.25); }
+.bubble::after { content: ""; position: absolute; left: 50%; bottom: -12px; margin-left: -8px; border: 8px solid transparent; border-top: 12px solid var(--ink); border-bottom: 0; }
+.mug.toon { width: 64px; height: 64px; border: 3px solid var(--ink); filter: saturate(1.4) contrast(1.1); background: #fff; }
+@media (max-width: 860px) { .cpanels { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .cpanels { grid-template-columns: 1fr; } }
+
+/* ---- while the book is closed, the cover IS the pack: hide the masthead + outer frame ---- */
+body.on-cover .pack { background: transparent; box-shadow: none; padding: 0; }
+body.on-cover .pack > .gum, body.on-cover .pack > .cover, body.on-cover .pack > .strip { display: none; }
+body.on-cover .flap { color: #f0e2c4; } body.on-cover .flap a { color: var(--pack); }
+body.on-cover .where { color: #f0e2c4; } body.on-cover .dots button { border-color: #f0e2c4; }
+body.on-cover .dots button.on { background: #f0e2c4; }
+@media (max-width: 560px) {
+  .hardcover .ear { display: block; font-size: 12px; padding: 6px 8px; }
+  .hardcover .ear b { font-size: 18px; }
+  .hardcover .seal { width: 78px; }
+  .pc-top { padding: 22px 20px 0; }
+  .hardcover .flag h1 { font-size: 58px; }
+  .pc-band { font-size: 11px; letter-spacing: .16em; }
+}
+
+/* ---- Garden Scoreboard (uptime) + Coming Up + Money & Market ---- */
+.board { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+.sb-best { margin: 0 0 8px; font-size: 15px; }
+.sb-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.sb-cols h4 { margin: 4px 0; font: 600 11px/1 Oswald, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.sb-cols ul, .cu { list-style: none; padding: 0; margin: 0; }
+.sb-row { display: flex; align-items: center; gap: 8px; border-top: 1px dotted var(--muted); padding: 5px 0; }
+.sb-name { flex: 1; line-height: 1.15; } .sb-name small { display: block; font-size: 11px; color: var(--muted); }
+.sb-streak { font: 700 14px/1 Oswald, sans-serif; letter-spacing: .06em; }
+.light { width: 11px; height: 11px; border-radius: 50%; flex: none; border: 1.5px solid var(--ink); }
+.light.up { background: #3f9b3a; } .light.warn { background: #e2a52b; } .light.down { background: #c93a2b; }
+.cu li { display: flex; align-items: center; gap: 8px; border-top: 1px dotted var(--muted); padding: 6px 0; font-size: 15px; }
+.cu-when { flex: none; min-width: 64px; font: 700 12px/1.1 Oswald, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--rust); }
+.market { background: repeating-linear-gradient(90deg, transparent 0 28px, rgba(47,107,42,.05) 28px 29px), rgba(255,255,255,.35); }
+.market h2 { color: #2f6b2a; }
+.market-teaser { text-align: center; padding: 18px 10px; }
+.market-teaser h3 { font: 400 30px/1.1 "Abril Fatface", serif; }
+@media (max-width: 860px) { .board, .sb-cols { grid-template-columns: 1fr; } }
+
+/* ---- Token Tracker ---- */
+.tk-sum { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+.tk-sum div { border: 1.5px solid var(--rule); background: rgba(255,255,255,.5); padding: 8px; text-align: center; }
+.tk-sum b { display: block; font: 400 28px/1 "Abril Fatface", serif; color: var(--rust); }
+.tk-sum small { font: 600 10px/1 Oswald, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.tk-chart { display: flex; align-items: flex-end; gap: 3px; height: 150px; padding: 6px 4px 18px; border-bottom: 2px solid var(--rule);
+  background: repeating-linear-gradient(0deg, transparent 0 29px, rgba(42,33,24,.12) 29px 30px); margin-bottom: 14px; }
+.tk-bar { position: relative; flex: 1; height: 100%; display: flex; align-items: flex-end; }
+.tk-bar span { display: block; width: 100%; background: var(--ink); border-radius: 2px 2px 0 0; }
+.tk-bar.peak span { background: var(--rust); }
+.tk-bar i { position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%); font: 600 10px/1 Oswald, sans-serif; font-style: normal; color: var(--muted); }
+.tk-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.tk-list h4 { margin: 0 0 4px; font: 600 11px/1 Oswald, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.tk-list ul { list-style: none; padding: 0; margin: 0; }
+.tk-list li { display: flex; align-items: center; gap: 6px; border-top: 1px dotted var(--muted); padding: 4px 0; font-size: 14px; }
+.tk-name { flex: 0 0 38%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tk-meter { flex: 1; height: 8px; background: rgba(42,33,24,.12); }
+.tk-meter span { display: block; height: 100%; background: var(--pack-dark); }
+.tk-list b { font: 700 13px/1 Oswald, sans-serif; min-width: 42px; text-align: right; }
+@media (max-width: 860px) { .tk-grid { grid-template-columns: 1fr; } .tk-sum { grid-template-columns: repeat(2, 1fr); } }
+
+/* ---- follow-ups on approved listings ---- */
+.followups { margin-top: 16px; }
+.fu { list-style: none; padding: 0; margin: 0; }
+.fu li { display: flex; gap: 10px; align-items: flex-start; border-top: 1px dotted var(--muted); padding: 6px 0; }
+.fu-icon { font-size: 18px; }
+.jm-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.btn.link { text-decoration: none; font-size: 13px; padding: 7px 10px; background: #fffaf0; }
+.tag-card { border: 2px dashed var(--rule); padding: 8px 10px; background: #fffdf5; margin-top: 8px; }
+.tag-row { display: flex; justify-content: space-between; gap: 10px; border-top: 1px dotted var(--muted); padding: 4px 0; font-size: 14px; }
+.tag-row:first-child { border-top: 0; }
+
+/* ---- B.I.G's catalog: a 90s wish-book with starburst price tags ---- */
+.market { background: #fffdf3; }
+.catalog-head { text-align: center; font: 400 34px/1 "Abril Fatface", serif; color: #1f4f8f; margin-bottom: 4px; }
+.catalog-head span { display: block; font: 700 14px/1 Oswald, sans-serif; letter-spacing: .3em; color: #d8312a; }
+.catalog-head small { display: block; margin-top: 6px; font: 400 13px/1.2 "Old Standard TT", serif; color: var(--muted); }
+.catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; margin-top: 12px; }
+.cat-item { position: relative; text-align: left; font: inherit; color: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 6px;
+  background: #fff; border: 2px solid #1f4f8f; border-radius: 4px; padding: 16px 12px 12px; min-height: 190px;
+  box-shadow: 4px 4px 0 rgba(31,79,143,.25); transition: transform .1s; }
+.cat-item:hover { transform: translate(-1px, -2px); }
+.burst { position: absolute; top: -18px; right: -12px; width: 96px; height: 96px; display: grid; place-items: center; transform: rotate(10deg);
+  background: #ffe600; clip-path: polygon(50% 0%, 61% 18%, 82% 9%, 80% 31%, 100% 38%, 86% 55%, 98% 74%, 76% 76%, 72% 98%, 55% 86%,
+  38% 100%, 30% 80%, 8% 84%, 15% 63%, 0% 48%, 18% 36%, 10% 14%, 32% 17%, 42% 0%); filter: drop-shadow(0 0 0 #d8312a); }
+.burst::before { content: ""; position: absolute; inset: 5px; background: #d8312a; clip-path: inherit; z-index: 0; }
+.burst span { position: relative; z-index: 1; max-width: 62px; text-align: center; color: #fff; font: 700 12px/1.05 Oswald, sans-serif; letter-spacing: .02em; }
+.burst.big { position: relative; top: 0; right: 0; float: right; margin: 0 0 8px 10px; width: 120px; height: 120px; }
+.burst.big span { font-size: 15px; max-width: 80px; }
+.cat-no { font: 700 10px/1 Oswald, sans-serif; letter-spacing: .18em; color: #1f4f8f; }
+.cat-title { font: 700 18px/1.15 "Old Standard TT", serif; padding-right: 64px; }
+.cat-tag { align-self: flex-start; background: #1f4f8f; color: #fff; font: 600 10px/1 Oswald, sans-serif; letter-spacing: .14em; text-transform: uppercase; padding: 3px 6px; }
+.cat-desc { font-size: 14px; }
+.cat-meta { display: flex; gap: 10px; margin-top: auto; font: 600 11px/1.2 Oswald, sans-serif; letter-spacing: .06em; color: var(--muted); }
+.cat-more { font: 600 11px/1 Oswald, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #d8312a; }
+
+/* ---- The Funnies: Sunday-paper strips (ink, lettered balloons, watercolor wash) ---- */
+.page-in.comic-page { background: #f7f0de; }
+.fn-head { text-align: center; font: 400 44px/1 "Abril Fatface", serif; letter-spacing: .02em; margin-bottom: 10px; border-bottom: 4px double var(--rule); padding-bottom: 6px; }
+.strip-row { margin: 0 0 18px; }
+.strip-name { display: flex; justify-content: space-between; align-items: baseline; font: 400 22px/1 "Abril Fatface", serif; margin-bottom: 4px; }
+.strip-name span { font: italic 400 13px/1 "Old Standard TT", serif; color: var(--muted); }
+.ink-panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 6px; }
+.ink-panel { position: relative; min-height: 210px; border: 2.5px solid #181410; display: flex; flex-direction: column; padding: 6px;
+  background: linear-gradient(180deg, rgba(122,170,196,.22), rgba(255,255,255,0) 45%), linear-gradient(0deg, rgba(214,160,112,.25), rgba(255,255,255,0) 40%), #fbf6e8; }
+.ink-panel:nth-child(2n) { background: linear-gradient(180deg, rgba(232,176,120,.24), rgba(255,255,255,0) 50%), linear-gradient(0deg, rgba(120,160,120,.22), rgba(255,255,255,0) 40%), #fbf6e8; }
+.ink-narr { align-self: flex-start; background: #fbf6e8; border: 1.5px solid #181410; padding: 2px 6px; font: 400 13px/1.2 "Patrick Hand SC", "Comic Neue", cursive; }
+.ink-sfx { position: absolute; right: 8px; top: 30px; transform: rotate(-10deg); font: 400 22px/1 "Patrick Hand SC", cursive; color: #181410; letter-spacing: .04em; }
+.ink-stage { margin-top: auto; display: flex; justify-content: space-around; align-items: flex-end; gap: 6px; }
+.ink-actor { display: flex; flex-direction: column; align-items: center; gap: 8px; max-width: 64%; }
+.balloon { position: relative; background: #fffef8; border: 1.8px solid #181410; border-radius: 50% / 42%; padding: 8px 12px;
+  font: 400 14px/1.15 "Patrick Hand SC", "Comic Neue", cursive; text-align: center; text-transform: uppercase; }
+.balloon::after { content: ""; position: absolute; left: 46%; bottom: -13px; width: 14px; height: 14px; border-right: 1.8px solid #181410;
+  border-bottom: 1.8px solid #181410; background: #fffef8; transform: skewX(-25deg) rotate(35deg); border-radius: 0 0 6px 0; }
+.mug.ink { width: 62px; height: 62px; border: 2.5px solid #181410; filter: grayscale(1) contrast(1.9) brightness(1.08) sepia(.15); background: #fff; }
+
+/* ---- The Garden Almanac ---- */
+.almanac-page { border: 3px double var(--rule); padding: 14px 16px; background: #fbf5e2; }
+.alm-head { text-align: center; font: 400 34px/1 "Abril Fatface", serif; border-bottom: 2px solid var(--rule); padding-bottom: 6px; margin-bottom: 10px; }
+.alm-head small { display: block; font: italic 400 14px/1.4 "Old Standard TT", serif; color: var(--muted); }
+.alm-cols { column-count: 3; column-gap: 22px; column-rule: 1px solid rgba(42,33,24,.35); }
+.alm-sec { break-inside: avoid; margin-bottom: 12px; }
+.alm-sec h4 { margin: 0 0 4px; font: 700 12px/1 Oswald, sans-serif; letter-spacing: .22em; text-transform: uppercase; color: var(--rust); }
+.alm-sec ul { list-style: none; padding: 0; margin: 0; font-size: 14px; }
+.alm-sec li { border-top: 1px dotted var(--muted); padding: 3px 0; }
+.alm-foot { border-top: 2px solid var(--rule); margin-top: 8px; padding-top: 8px; text-align: center; }
+.alm-saying { font: italic 400 18px/1.3 "Old Standard TT", serif; }
+@media (max-width: 860px) { .alm-cols { column-count: 1; } }
+
+/* ---- Payroll ---- */
+.paytab { width: 100%; border-collapse: collapse; font-size: 14px; }
+.paytab th { font: 600 11px/1 Oswald, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); text-align: right; padding: 6px 4px; border-bottom: 2px solid var(--rule); }
+.paytab th:first-child, .paytab td:first-child { text-align: left; }
+.paytab td { border-top: 1px dotted var(--muted); padding: 5px 4px; text-align: right; }
+.paytab td:first-child span { margin-left: 6px; }
+.paytab td.pay { font: 700 15px/1 Oswald, sans-serif; color: #2f6b2a; }
+.eotd { background: #fff3a8; border: 2px solid var(--ink); padding: 6px 10px; display: inline-block; }
+
+/* ---- back cover: real barcode + QR code ---- */
+.codes { display: flex; gap: 12px; align-items: center; justify-content: center; background: var(--paper); border: 6px solid var(--paper); }
+.bc-wrap { display: block; width: 230px; height: 70px; }
+.barcode-svg { width: 100%; height: 100%; fill: #000; background: #fff; }
+.qr { width: 92px; height: 92px; background: #fff; }
+.qr svg { width: 100%; height: 100%; display: block; }
+
+/* ---- drawn funnies (v5) ---- */
+.strip-art { margin: 0 0 14px; background: #fff; border: 1px solid #2a1a10; box-shadow: 2px 2px 0 rgba(0,0,0,.25); }
+.strip-art img { display: block; width: 100%; height: auto; }
+.strip-art a { display: block; cursor: zoom-in; }
+
+/* ---- modal scroll (v5): long tag cards scroll inside the card ---- */
+.modal { overflow: hidden; }
+.modal-card { max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; touch-action: pan-y; }
+.modal-x { position: sticky; float: right; top: 0; margin: -10px -8px 0 0; z-index: 2; background: var(--paper); border-radius: 50%; width: 36px; height: 36px; }
+
+/* ---- app bar (notices + install), shared by the Garden paper apps ---- */
+.app-bar { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 90; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+  justify-content: center; max-width: calc(100% - 24px); background: #f5eedb; border: 2px solid #1b1510; border-radius: 12px; padding: 8px 34px 8px 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.45); font: 600 13px/1.3 Oswald, sans-serif; }
+.app-bar[hidden] { display: none; }
+.app-btn { font: 600 13px/1 Oswald, sans-serif; letter-spacing: .04em; border: 2px solid #1b1510; background: #fff; border-radius: 8px; padding: 8px 10px; cursor: pointer; }
+.app-x { position: absolute; right: 6px; top: 4px; border: 0; background: none; font: 400 24px/1 serif; cursor: pointer; }
+.app-msg:empty { display: none; }
+.app-msg { flex-basis: 100%; text-align: center; font-weight: 400; }
+/* ---- plain newsstand pages ---- */
+body.stand { padding: 12px 12px 40px; }
+.stand-top { max-width: 1080px; margin: 0 auto 12px; display: grid; grid-template-columns: 46px 1fr 46px; gap: 10px; align-items: center; text-align: center;
+  background: var(--pack); border: 3px solid var(--ink); border-radius: 12px; padding: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.45); }
+.stand-top h1 { margin: 0; font: 400 clamp(26px, 6vw, 44px)/1 "Abril Fatface", serif; color: var(--paper); -webkit-text-stroke: 1.5px var(--ink); paint-order: stroke fill; text-shadow: 3px 3px 0 var(--ink); }
+.stand-sub { font: 600 11px/1.4 Oswald, sans-serif; letter-spacing: .26em; text-transform: uppercase; color: var(--ink); }
+.stand-home { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--paper); border: 3px solid var(--ink);
+  text-decoration: none; font-size: 22px; box-shadow: 2px 2px 0 var(--ink); }
+body.stand .paper { max-width: 1080px; margin: 0 auto; }
+.cat-day, .fn-day { margin-bottom: 26px; }
+.cat-date { font: 400 24px/1.1 "Abril Fatface", serif; border-bottom: 3px double var(--rule); padding-bottom: 4px; margin: 6px 0 12px; }
+.cat-date small { font: 600 11px/1 Oswald, sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-left: 8px; }
+.plan-links { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.plan-links a { font-weight: 700; }
+.arch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.arch h2 { margin-top: 0; }
+@media (max-width: 760px) { .arch-grid { grid-template-columns: 1fr; } }
+
+.stand-top > div { min-width: 0; }
+.stand-top h1 { overflow-wrap: anywhere; }
+body.stand .paper { overflow-wrap: anywhere; }
+.guide-body h2 { letter-spacing: .02em; overflow-wrap: anywhere; }
+/* ---- THE GREEN THUMB ---- */
+body.yp-page { --pack: #6fb35a; --pack-dark: #3f7d3a; }
+body.yp-page .stand-top h1 { font: 700 clamp(26px, 6vw, 40px)/1 Oswald, sans-serif; text-transform: uppercase; color: var(--ink); -webkit-text-stroke: 0; text-shadow: none; }
+.yp { background: #eef7e6; }
+.yp-head { text-align: center; border-bottom: 4px solid var(--ink); padding-bottom: 8px; margin-bottom: 12px; }
+.yp-title { font: 700 clamp(34px, 8vw, 58px)/1 Oswald, sans-serif; text-transform: uppercase; letter-spacing: .02em; }
+.yp-sub { font: 600 12px/1.6 Oswald, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.yp-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.yp-tools input { flex: 1 1 220px; font: 17px "Old Standard TT", serif; padding: 9px 10px; border: 2px solid var(--ink); border-radius: 6px; background: #fff; }
+.yp-letter { font: 700 22px/1 Oswald, sans-serif; text-transform: uppercase; background: var(--ink); color: #6fb35a; padding: 6px 10px; margin: 20px 0 10px; }
+.yp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 10px; }
+.yp-card { background: #fff; border: 2px solid var(--ink); border-radius: 6px; padding: 10px; }
+.yp-name { display: flex; justify-content: space-between; gap: 6px; align-items: baseline; font-size: 18px; margin-bottom: 4px; }
+.yp-name .tag { font: 600 10px/1 Oswald, sans-serif; letter-spacing: .12em; text-transform: uppercase; background: #6fb35a; border: 1px solid var(--ink); padding: 3px 5px; }
+.yp-row { display: grid; grid-template-columns: 76px 1fr auto auto; gap: 6px; align-items: center; font-size: 15px; padding: 3px 0; border-top: 1px dotted #b9d7a8; }
+.yp-row > span { font: 600 10px/1 Oswald, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.yp-row code, .yp-row a { overflow-wrap: anywhere; font-size: 14px; }
+.yp-mini { font: 600 12px/1 Oswald, sans-serif; border: 1.5px solid var(--ink); background: #eef7e6; border-radius: 4px; padding: 5px 7px; cursor: pointer; white-space: nowrap; }
+.yp-field { display: block; margin: 8px 0; font: 600 12px/1.4 Oswald, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.yp-field input, .yp-field textarea { display: block; width: 100%; margin-top: 4px; font: 17px "Old Standard TT", serif; padding: 8px; border: 2px solid var(--ink); border-radius: 5px; text-transform: none; letter-spacing: 0; }
+.yp-foot { margin-top: 20px; }
+body.yp-page .stand-top h1 { color: #14361a; }
+.yp-letter { color: #b9f0a0; }

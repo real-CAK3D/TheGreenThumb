@@ -1,0 +1,17 @@
+drafts/
+jobs/
+private/
+push/
+plans/
+guides/
+site/data/
+site/img/
+site/icons/
+site/issues/
+site/editions/
+site/guides/
+site/*.html
+site/latest.json
+__pycache__/
+*.bak*
+*.seed.json
