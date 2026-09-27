@@ -15,4 +15,4 @@ Part of the Garden's papers, all read through **[The Corner Chronicle](https://g
 
 ## Running
 
-Refreshes hourly; served at `/green-thumb/` under the Newsstand. The locker needs HTTPS (Web Crypto). Each project is Linux-first (`%-d` date formatting) and expects a Hermes install on the same machine.
+Refreshes hourly; served at `/green-thumb/` under The Corner Chronicle. The locker needs HTTPS (Web Crypto). Each project is Linux-first (`%-d` date formatting) and expects a Hermes install on the same machine.
