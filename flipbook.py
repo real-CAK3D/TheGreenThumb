@@ -605,6 +605,27 @@ def puzzles_block(ed, date):
             % (table, "".join("<li>%s</li>" % w for w in sorted(placed)), scopes or '<p class="small">The stars were quiet today.</p>'))
 
 
+# ---------------------------------------------------------------- obituaries & announcements
+def obits_block(ed, date):
+    try:
+        auto = json.load(open(os.path.join(SITE, "data", "obits-%s.json" % date)))
+    except Exception:
+        auto = {}
+    obits = [x for x in ed.get("obituaries") or [] if isinstance(x, dict)]
+    obits += [{"name": x.get("name"), "text": "Removed from The Green Thumb's %s listings. Survived by the rest of the Garden." % (x.get("device") or "Garden")}
+              for x in auto.get("passed") or []]
+    births = [x for x in ed.get("announcements") or [] if isinstance(x, dict)]
+    births += [{"title": "Welcome, %s" % x.get("name"), "text": "A new %s on %s joined The Green Thumb's directory." % (x.get("category") or "listing", x.get("device") or "the Garden")}
+               for x in auto.get("born") or []]
+    if not (obits or births):
+        return ""
+    ob = "".join('<div class="obit"><div class="obit-name">🕯 %s</div>%s<p>%s</p></div>'
+                 % (e(x.get("name")), ('<div class="obit-dates">%s</div>' % e(x["dates"])) if x.get("dates") else "", e(x.get("text"))) for x in obits)
+    an = "".join('<div class="announce"><b>%s</b><p>%s</p></div>' % (e(x.get("title")), e(x.get("text"))) for x in births)
+    return ('<div class="obits"><div class="obit-col"><h2>Obituaries</h2>%s</div><div class="announce-col"><h2>Announcements</h2>%s</div></div>'
+            % (ob or '<p class="small">No passings today.</p>', an or '<p class="small">No new arrivals today.</p>'))
+
+
 # ---------------------------------------------------------------- listings (jobs + want ads), clickable
 def listing_block(items, kind):
     """Job Listings (kind='job') and Want Ads (kind='want') are both tappable: approve / handle / not now (+ link)."""
@@ -817,6 +838,9 @@ def render(ed):
                  '<div class="box fu-box">%s<a class="reup-plug" href="/re-up/"><b>Want ads</b> are in <i>The Re-Up</i> ›</a></div></div>'
                  % (blotter or "<li>A quiet night. Nobody got arrested, not even the cron jobs.</li>",
                     listing_block(ed.get("job_listings"), "job"), followups_block(date) or '<h2>Follow-ups</h2><p class="small">Nothing approved lately.</p>'), "", "Classifieds"))
+    ob = obits_block(ed, date)
+    if ob:
+        body.append(("Obituaries & Announcements", sec("Obituaries", "Passings · Arrivals") + ob, " obits-page", "Obituaries"))
     body.append(("Weather & Almanac", sec("Weather", "Forecast · Sky · Season") + '<div class="wx-page">%s%s</div>' % (weather_block(date), coming_block(ed.get("coming_up")))
                  + almanac_block(date, ed.get("almanac_notes"), ed.get("almanac")), " weather-page", "Weather"))
     body.append(("Puzzles & Garden-scopes", sec("Puzzles", "Word search · Garden-scopes") + puzzles_block(ed, date)
@@ -889,7 +913,7 @@ TEMPLATE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <link rel="icon" href="/icons/icon-192.png"><link rel="apple-touch-icon" href="/icons/icon-192.png">
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><script src="/app.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Rye&family=UnifrakturMaguntia&family=Bangers&family=Patrick+Hand+SC&family=Oswald:wght@400;600;700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Rye&family=Luckiest+Guy&family=UnifrakturMaguntia&family=Bangers&family=Patrick+Hand+SC&family=Oswald:wght@400;600;700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>@@CSS@@</style></head><body class="@@BODYCLASS@@">
 <div class="pack">
   <div class="gum"><span>@@GUM@@</span></div>
