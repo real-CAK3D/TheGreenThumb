@@ -5,7 +5,7 @@
   GET/POST /api/yp/entries   listings CAK3D added himself (no passwords)
 Usage: serve.py <site_dir> <host> <port>
 """
-import os, sys
+import os, subprocess, sys
 
 import gardenweb as gw
 from gardenweb import jload, jsave, LOCK
@@ -39,6 +39,7 @@ class Handler(gw.Handler):
             keep = ("id", "name", "device", "category", "url", "ip", "ssh", "tailscale", "notes")
             with LOCK:
                 jsave(os.path.join(PRIVATE, "entries.json"), {"entries": [{k: str(x.get(k) or "")[:500] for k in keep} for x in ents if isinstance(x, dict)]})
+                subprocess.run([sys.executable, os.path.join(ROOT, "build_green_thumb.py"), "--offline"], capture_output=True, timeout=120)   # reprint the book
             self.json(200, {"ok": True})
             return True
 

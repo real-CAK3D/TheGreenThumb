@@ -448,3 +448,72 @@ body.yp-page .stand-top h1 { font: 700 clamp(26px, 6vw, 40px)/1 Oswald, sans-ser
 .yp-foot { margin-top: 20px; }
 body.yp-page .stand-top h1 { color: #14361a; }
 .yp-letter { color: #b9f0a0; }
+
+/* ==================================================================== rolling-paper packs (v8): each paper wears its own pack */
+.flag h1 { letter-spacing: .01em; }
+
+/* ---- The Sunday Smoke: the black ribbed KING pack with gold lettering ---- */
+body.pub-sun { --pack: #14110e; --pack-dark: #0a0806; --gold: #d8a84e; --rust: #a8321f; }
+body.pub-sun .pack { background: repeating-linear-gradient(0deg, #1c1814 0 2px, #0e0c0a 2px 4px);
+  box-shadow: 0 14px 40px rgba(0,0,0,.6), inset 0 0 0 3px #0a0806, inset 0 0 0 8px #1c1814, inset 0 0 0 10px var(--gold); }
+body.pub-sun .flag h1, body.pub-sun .page-in.hardcover .flag h1 { font-family: Rye, "Abril Fatface", serif; color: var(--gold); -webkit-text-stroke: 0; text-shadow: 2px 2px 0 #000; }
+body.pub-sun .est, body.pub-sun .motto, body.pub-sun .strip, body.pub-sun .strip span, body.pub-sun .flap, body.pub-sun .flap a,
+body.pub-sun .pc-open, body.pub-sun .where { color: var(--gold); border-color: var(--gold); }
+body.pub-sun .gum { background: repeating-linear-gradient(45deg, #e2bc68 0 6px, #cfa24e 6px 12px); color: #2a1a08; }
+body.pub-sun .page-in.hardcover { background: repeating-linear-gradient(0deg, #1c1814 0 2px, #0e0c0a 2px 4px); color: var(--gold); }
+body.pub-sun .pc-band { background: var(--gold); color: #120f0c; }
+body.pub-sun .seal { background: linear-gradient(135deg, #f0d48c, #c9973f); color: #1b140a; box-shadow: 0 0 0 3px var(--gold), 0 0 0 6px #0e0c0a; border-radius: 12px; }
+body.pub-sun .ear { background: #f0d48c; border-color: var(--gold); }
+body.pub-sun .cover { border-bottom-color: var(--gold); }
+
+/* ---- Roach Clips: the white KUTCORNERS pack, gold lettering, red ribbon ---- */
+body.pub-cp { --pack: #f7f4ec; --pack-dark: #d9d2c0; --gold: #b8862b; --ribbon: #c8102e; --rust: #c8102e; }
+body.pub-cp .pack { background: #f7f4ec; clip-path: polygon(26px 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 0 100%, 0 26px);
+  box-shadow: inset 0 0 0 3px #e3dccb, inset 0 0 0 7px #f7f4ec, inset 0 0 0 9px var(--gold); }
+body.pub-cp .flag h1, body.pub-cp .page-in.hardcover .flag h1 { font-family: Rye, "Abril Fatface", serif; color: var(--gold); -webkit-text-stroke: 0; text-shadow: 1px 2px 0 #6b4a12; }
+body.pub-cp .est, body.pub-cp .strip, body.pub-cp .strip span, body.pub-cp .flap, body.pub-cp .flap a, body.pub-cp .pc-open, body.pub-cp .where { color: #6b4a12; border-color: var(--gold); }
+body.pub-cp .motto { display: inline-block; background: var(--ribbon); color: #fff; padding: 5px 26px; font-weight: 700; letter-spacing: .14em;
+  clip-path: polygon(0 0, 100% 0, 94% 50%, 100% 100%, 0 100%, 6% 50%); }
+body.pub-cp .gum { background: repeating-linear-gradient(45deg, #efe6d0 0 6px, #e5dac0 6px 12px); color: #6b4a12; border-bottom-color: var(--gold); }
+body.pub-cp .page-in.hardcover { background: #f7f4ec; color: #3b2a10; }
+body.pub-cp .pc-band { background: var(--ribbon); color: #fff; }
+body.pub-cp .seal { background: #fff; color: #1f3a8a; box-shadow: 0 0 0 3px var(--gold), 0 0 0 7px #fff, 0 0 0 9px var(--gold); }
+body.pub-cp .ear { border-color: var(--gold); }
+body.pub-cp .cover { border-bottom-color: var(--gold); color: #3b2a10; }
+
+/* ---- The Green Thumb: the ORGANIC HEMP pack ---- */
+body.pub-gt { --pack: #c9e09c; --pack-dark: #1f4f24; --hemp: #1d3b1d; --rust: #2f6b2c; }
+body.pub-gt .pack { background: repeating-linear-gradient(90deg, rgba(0,0,0,.035) 0 1px, transparent 1px 4px), #c9e09c;
+  box-shadow: 0 14px 40px rgba(0,0,0,.5), inset 0 0 0 4px #1f4f24, inset 0 0 0 8px #c9e09c, inset 0 0 0 10px #1f4f24; }
+body.pub-gt .flag h1, body.pub-gt .page-in.hardcover .flag h1 { font-family: Rye, "Abril Fatface", serif; color: var(--hemp); -webkit-text-stroke: 0; text-shadow: 1px 2px 0 rgba(255,255,255,.4); }
+body.pub-gt .est, body.pub-gt .strip, body.pub-gt .strip span, body.pub-gt .flap, body.pub-gt .flap a, body.pub-gt .pc-open, body.pub-gt .where { color: var(--hemp); border-color: var(--hemp); }
+body.pub-gt .motto { display: inline-block; background: #161616; color: #c9e09c; padding: 4px 14px; font-weight: 700; letter-spacing: .2em; }
+body.pub-gt .gum { background: repeating-linear-gradient(45deg, #b5d282 0 6px, #a6c672 6px 12px); color: var(--hemp); }
+body.pub-gt .page-in.hardcover { background: repeating-linear-gradient(90deg, rgba(0,0,0,.035) 0 1px, transparent 1px 4px), #c9e09c; color: var(--hemp); }
+body.pub-gt .pc-band { background: #1f4f24; color: #e4f2c6; }
+body.pub-gt .seal { background: #eef6dc; color: var(--hemp); box-shadow: 0 0 0 3px #1f4f24; }
+body.pub-gt .cover { color: var(--hemp); }
+.gt-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 10px; padding: 8px; background: #eef6dc; border: 2px solid #1f4f24; border-radius: 6px; }
+.gt-tools input { flex: 1 1 200px; font: 17px "Old Standard TT", serif; padding: 8px 10px; border: 2px solid #1f4f24; border-radius: 5px; background: #fff; }
+.gt-tools .small { flex-basis: 100%; }
+.yp-card.hit { outline: 4px solid #e8b23a; box-shadow: 0 0 0 8px rgba(232,178,58,.35); }
+.gt-howto ul li { margin: 6px 0; } .gt-index { columns: 2; }
+.yp-row.locked code { color: var(--muted); }
+
+/* ---- The Re-Up: the kraft UNBLEACHED pack ---- */
+body.pub-ru { --pack: #c9a27b; --pack-dark: #8a6440; --kraft-ink: #3a2616; --band: #b8532e; --rust: #9c3b1c; }
+body.pub-ru .pack { background: radial-gradient(circle at 20% 30%, rgba(255,255,255,.08) 0 1px, transparent 2px) 0 0/7px 7px,
+  radial-gradient(circle at 70% 60%, rgba(0,0,0,.06) 0 1px, transparent 2px) 0 0/9px 9px, #c9a27b;
+  box-shadow: 0 14px 40px rgba(0,0,0,.5), inset 0 0 0 3px #8a6440; }
+body.pub-ru .flag h1, body.pub-ru .page-in.hardcover .flag h1 { font-family: Rye, "Abril Fatface", serif; font-weight: 400; text-transform: none; color: var(--kraft-ink);
+  -webkit-text-stroke: 0; text-shadow: 1px 2px 0 rgba(255,255,255,.25); }
+body.pub-ru .est, body.pub-ru .strip, body.pub-ru .strip span, body.pub-ru .flap, body.pub-ru .flap a, body.pub-ru .pc-open, body.pub-ru .where { color: var(--kraft-ink); border-color: var(--kraft-ink); }
+body.pub-ru .motto { display: inline-block; background: var(--band); color: #f7e8d2; padding: 4px 16px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+body.pub-ru .gum { background: repeating-linear-gradient(45deg, #d8b48c 0 6px, #cda57d 6px 12px); color: var(--kraft-ink); }
+body.pub-ru .page-in.hardcover { background: #c9a27b; color: var(--kraft-ink); }
+body.pub-ru .pc-band { background: var(--band); color: #f7e8d2; }
+body.pub-ru .seal { background: #e7cfae; color: var(--kraft-ink); box-shadow: 0 0 0 3px var(--kraft-ink); }
+body.pub-ru .cover { color: var(--kraft-ink); }
+
+/* ---- The Sunday Smoke's funnies, a page per day ---- */
+.fn-dayhead { font: 400 26px/1 Rye, "Abril Fatface", serif; text-align: center; border-top: 3px double var(--rule); border-bottom: 3px double var(--rule); padding: 8px 0; margin-bottom: 12px; }
