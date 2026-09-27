@@ -827,7 +827,9 @@ def render(ed):
         if label and label not in [x[0] for x in index]:
             index.append((label, "Garden news" if label == "News" else t.split(":")[0], i + 3))
     goto["_index"] = index
-    pages = [page("Front Page", front_page(ed, date, goto), " front-page")] + [page(t, h, x) for t, h, x, _ in body]
+    front = page("Front Page", sec("News", "Today's top story") + '<div class="front"><div class="front-lead">%s</div><aside class="front-side">%s'
+                 '<div class="box keys"><h2>Logins &amp; Keys</h2>%s</div></aside></div>' % (story(head, lead=True), weather_block(date), keys))
+    pages = [front] + [page(t, h, x) for t, h, x, _ in body]
     # hard covers = the outside of the rolling-paper pack
     front_cover = page("The Pack", (
         '<div class="gum"><span>GUMMED · DOUBLE WIDE · 1¼ · SLOW BURNING</span></div>'
