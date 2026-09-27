@@ -467,6 +467,144 @@ def scoreboard_block(date):
                box or '<tr><td colspan="5">No games last night.</td></tr>', fac or '<tr><td colspan="4">—</td></tr>'))
 
 
+# ---------------------------------------------------------------- QR code (drawn here, so it's on the page however the book loads)
+def qr_svg(text):
+    try:
+        import qrcode
+    except ImportError:   # the system python borrows the Hermes venv's pure-python qrcode package
+        import glob as _g
+        sys.path.extend(_g.glob(os.path.expanduser("~/.hermes/hermes-agent/venv/lib/python3*/site-packages")))
+        import qrcode
+    q = qrcode.QRCode(border=2, error_correction=qrcode.constants.ERROR_CORRECT_M)
+    q.add_data(text)
+    q.make(fit=True)
+    m = q.get_matrix()
+    n = len(m)
+    cells = "".join('<rect x="%d" y="%d" width="1" height="1"/>' % (x, y) for y, row in enumerate(m) for x, v in enumerate(row) if v)
+    return ('<svg class="qr-svg" viewBox="0 0 %d %d" shape-rendering="crispEdges" role="img" aria-label="QR code: %s"><rect width="%d" height="%d" fill="#fff"/>'
+            '<g fill="#000">%s</g></svg>' % (n, n, e(text), n, n, cells))
+
+
+def back_codes(repo, label):
+    """Barcode + QR code for a paper's back cover, both pointing at its GitHub repo."""
+    return ('<div class="codes"><a class="bc-wrap" href="%s" title="%s on GitHub">%s</a><a class="qr" href="%s" title="%s on GitHub">%s</a></div>'
+            '<p class="pb-code">scan me · %s</p>' % (e(repo), e(label), code128_svg(repo), e(repo), e(label), qr_svg(repo), e(repo.replace("https://", ""))))
+
+
+# ---------------------------------------------------------------- the front page, like a real front page
+def front_page(ed, date, goto):
+    head = ed.get("headline") or {}
+    try:
+        w = json.load(open(os.path.join(SITE, "data", "weather-%s.json" % date)))
+    except Exception:
+        w = {}
+    now = w.get("now") or {}
+    days = w.get("days") or []
+    ear_l = ('<div class="fp-ear"><b>%s %s°</b><span>%s</span><span>%s</span><a data-goto="%s">Full forecast ›</a></div>'
+             % (wx_icon(now.get("text")), e(now.get("temp_f", "?")), e(now.get("text")),
+                e(" · ".join("%s %s°" % (str(d.get("name", ""))[:3], d.get("high")) for d in days[1:3])), goto.get("Weather & Almanac", "")))
+    inside = "".join('<li><a data-goto="%s"><span>%s</span>%s</a></li>' % (n, e(t), ('<i>%s</i>' % e(k)) if k.lower() != t.lower() else "")
+                     for t, k, n in goto.get("_index", []))
+    ear_r = '<div class="fp-ear"><b>INSIDE TODAY</b><ul class="fp-inside">%s</ul></div>' % inside
+    briefs = []
+    for s_ in ed.get("sections") or []:
+        for st in (s_.get("stories") or [])[:1]:
+            first = re.split(r"(?<=[.!?])\s", str(st.get("body") or "").strip(), 1)[0]
+            briefs.append('<div class="brief"><span class="kicker">%s</span><b>%s</b><p>%s</p><a data-goto="%s">Story on the %s page ›</a></div>'
+                          % (e(s_.get("name")), e(st.get("title")), e(re.sub(r"\*\*", "", first)), goto.get(s_.get("name"), ""), e(s_.get("name"))))
+    lead_body = para(head.get("body"))
+    return ('<div class="fp"><div class="fp-ears">%s<div class="fp-date">%s · Lewiston, Maine</div>%s</div>'
+            '<div class="fp-kicker">%s</div><h2 class="fp-banner">%s</h2><p class="fp-dek">%s</p>'
+            '<div class="fp-grid"><article class="fp-lead">%s%s</article><aside class="fp-rail"><div class="box keys"><h2>Logins &amp; Keys</h2>%s</div>%s</aside></div>'
+            '<div class="fold"><span>— fold —</span></div><h3 class="fp-below">In Brief</h3><div class="fp-briefs">%s</div></div>'
+            % (ear_l, e(dt.date.fromisoformat(date).strftime("%A, %B %-d, %Y")), ear_r, e(head.get("tag") or "Top story"), e(head.get("title")),
+               e(head.get("dek")), ('<div class="byline">%s<span>By %s</span></div>' % (mug(head.get("agent")), e(head.get("agent")))) if head.get("agent") else "",
+               lead_body, para(ed.get("logins_and_keys")) or "<p>No report.</p>", coming_block((ed.get("coming_up") or [])[:4]),
+               "".join(briefs[:6]) or '<p class="small">A quiet night on every desk.</p>'))
+
+
+def opinion_block(ed):
+    ed_ = ed.get("editorial") or {}
+    sug = [x for x in (ed.get("suggestions") or []) if isinstance(x, dict)]
+    if not (ed_.get("body") or sug):
+        return ""
+    letters = "".join('<div class="letter"><p>%s</p><span>— %s</span><b>%s</b></div>' % (e(x.get("text")), e(x.get("agent")), e(x.get("title"))) for x in sug)
+    return ('<div class="op"><div class="op-ed">%s</div><div class="op-letters"><h2>Letters to the Editor</h2><p class="small">Ideas for the paper — tell Ganja which ones to keep</p>%s</div></div>'
+            % (('<h2 class="op-title">%s</h2><div class="byline">%s<span>The Editorial Board · Ganja, editor</span></div>%s'
+                % (e(ed_.get("title") or "From the Editor"), mug("Ganja"), para(ed_.get("body")))) if ed_.get("body") else
+               '<h2 class="op-title">From the Editor</h2><p class="small">No editorial today.</p>', letters or '<p class="small">No letters today.</p>'))
+
+
+# ---------------------------------------------------------------- the centerfold: the Garden at a glance
+def centerfold_block(date):
+    def load(name):
+        try:
+            return json.load(open(os.path.join(SITE, "data", "%s-%s.json" % (name, date))))
+        except Exception:
+            return {}
+    u, up, pay = load("usage"), load("uptime"), load("payroll")
+    ah = u.get("agent_hours") or {}
+    rows = sorted(ah.items(), key=lambda kv: -sum(kv[1]))[:14]
+    top = max([max(v) for _, v in rows] + [1])
+    heat = "".join('<tr><th>%s<span>%s</span></th>%s<td class="tot">%s</td></tr>'
+                   % (mug(k, "mug xs"), e(k), "".join('<td style="--a:%.2f" title="%s:00 — %s"></td>' % ((x / top) ** .5 if x else 0, h, _k(x)) for h, x in enumerate(v)),
+                      _k(sum(v))) for k, v in rows)
+    hours = "".join("<th>%s</th>" % ((str(h % 12 or 12) + ("a" if h < 12 else "p")) if h % 3 == 0 else "") for h in range(24))
+    machines = "".join('<div class="cf-mach %s"><b>%s</b><span>%s</span><small>%s</small></div>'
+                       % ("up" if m.get("status") == "up" else "down", e(m["name"]), "UP" if m.get("status") == "up" else "DOWN",
+                          e(_streak(m.get("streak_h")) or "")) for m in up.get("machines") or [])
+    agents_up = sum(1 for a in up.get("agents") or [] if str(a.get("status")) in ("up", "shift ok"))
+    jobs = sum(r.get("jobs", 0) for r in pay.get("rows") or [])
+    pay_t = sum(r.get("today", 0) for r in pay.get("rows") or [])
+    nums = [("Tokens burned", _k(u.get("total"))), ("API calls", "~%s" % (u.get("calls") or 0)), ("Agents on the clock", "%d / %d" % (agents_up, len(up.get("agents") or []))),
+            ("Relay jobs", str(jobs)), ("Pretend payroll", "$%.2f" % pay_t), ("Longest streak", "%s · %s" % ((up.get("longest") or {}).get("name", "—"), _streak((up.get("longest") or {}).get("streak_h"))))]
+    return ('<div class="cf"><div class="cf-title"><span>THE GARDEN</span><span>AT A GLANCE</span></div>'
+            '<div class="cf-nums">%s</div>'
+            '<h4>Who worked when — tokens by agent, hour by hour</h4><div class="cf-heatwrap"><table class="cf-heat"><thead><tr><th></th>%s<th>Total</th></tr></thead><tbody>%s</tbody></table></div>'
+            '<h4>The machines</h4><div class="cf-machines">%s</div></div>'
+            % ("".join('<div><small>%s</small><b>%s</b></div>' % (e(a), e(b)) for a, b in nums), hours,
+               heat or '<tr><td>No hourly figures today.</td></tr>', machines or '<p class="small">No machine report.</p>'))
+
+
+# ---------------------------------------------------------------- puzzles: a word search from the day's news + Garden-scopes
+def wordsearch(words, seed, size=12):
+    import random
+    rnd = random.Random(seed)
+    grid = [[""] * size for _ in range(size)]
+    placed = []
+    dirs = [(0, 1), (1, 0), (1, 1), (-1, 1)]
+    for w in sorted({re.sub(r"[^A-Z]", "", x.upper()) for x in words if x}, key=len, reverse=True):
+        if not 3 <= len(w) <= size or len(placed) >= 10:
+            continue
+        for _ in range(200):
+            dy, dx = rnd.choice(dirs)
+            y0, x0 = rnd.randrange(size), rnd.randrange(size)
+            cells = [(y0 + dy * i, x0 + dx * i) for i in range(len(w))]
+            if all(0 <= y < size and 0 <= x < size and grid[y][x] in ("", w[i]) for i, (y, x) in enumerate(cells)):
+                for i, (y, x) in enumerate(cells):
+                    grid[y][x] = w[i]
+                placed.append(w)
+                break
+    for y in range(size):
+        for x in range(size):
+            grid[y][x] = grid[y][x] or rnd.choice("ABCDEFGHIKLMNOPRSTUWY")
+    return grid, placed
+
+
+def puzzles_block(ed, date):
+    words = ["GANJA", "CHRONIC", "MAPLE", "HERBIE", "HOMIE", "IBBY", "BAKER", "CYPHER", "CLYDIUS", "GARDEN", "RELAY", "VAULT", "TOKENS"]
+    text = " ".join([str((ed.get("headline") or {}).get("title") or "")] + [str(st.get("title")) for s_ in ed.get("sections") or [] for st in s_.get("stories") or []])
+    news = [w for w in re.findall(r"(?<![A-Za-z0-9])[A-Za-z]{5,9}(?![A-Za-z0-9])", text) if w.lower() not in ("their", "there", "after", "about", "which", "garden", "still", "going")]
+    grid, placed = wordsearch(news[:6] + words, date)
+    table = "".join("<tr>%s</tr>" % "".join("<td>%s</td>" % c for c in row) for row in grid)
+    scopes = "".join('<div class="scope">%s<div><b>%s</b><p>%s</p></div></div>' % (mug(x.get("agent"), "mug sm"), e(x.get("agent")), e(x.get("text")))
+                     for x in ed.get("horoscopes") or [] if isinstance(x, dict))
+    return ('<div class="pz"><div class="pz-ws"><h2>Word Search</h2><p class="small">Every word is from today\'s paper. Tap letters to circle them.</p>'
+            '<table class="ws">%s</table><ul class="ws-words">%s</ul></div>'
+            '<div class="pz-scopes"><h2>Garden-scopes</h2><p class="small">What the stars (and the cron jobs) hold today</p>%s</div></div>'
+            % (table, "".join("<li>%s</li>" % w for w in sorted(placed)), scopes or '<p class="small">The stars were quiet today.</p>'))
+
+
 # ---------------------------------------------------------------- listings (jobs + want ads), clickable
 def listing_block(items, kind):
     """Job Listings (kind='job') and Want Ads (kind='want') are both tappable: approve / handle / not now (+ link)."""
@@ -659,33 +797,37 @@ def render(ed):
     blotter = "".join('<li>%s<span><b>%s</b> %s</span></li>' % (mug(b.get("agent"), "mug xs"), e(b.get("time")), e(b.get("text")))
                       for b in ed.get("police_blotter") or [] if isinstance(b, dict))
     almanac = "".join("<li><b>%s</b> %s</li>" % (e(k), e(v)) for k, v in (ed.get("almanac") or {}).items())
-    # a real paper: News · Business · Sports · Classifieds · Almanac
-    pages = [page("Front Page", sec("News", "Today's top story") + '<div class="front"><div class="front-lead">%s</div><aside class="front-side">%s'
-                  '<div class="box keys"><h2>Logins &amp; Keys</h2>%s</div></aside></div>' % (story(head, lead=True), weather_block(date), keys))]
+    # laid out like a real paper: front page, news, opinion, business, the centerfold, sports, classifieds, weather, puzzles
+    body = []   # (title, html, extra, index label or None)
     for s_ in ed.get("sections") or []:
         if isinstance(s_, dict) and s_.get("stories"):
-            pages.append(page(s_.get("name"), sec("News", s_.get("name")) + '<div class="desk"><h2 class="desk-name">%s</h2><div class="cols">%s</div></div>'
-                              % (e(s_.get("name")), "".join(story(x) for x in s_["stories"]))))
-    sug = [x for x in (ed.get("suggestions") or []) if isinstance(x, dict)]
-    if sug:   # ideas for new sections/improvements; CAK3D decides what sticks
-        pages.append(page("Letters to the Editor", sec("Opinion", "Letters to the Editor") +
-                          '<div class="box letters"><h2>Letters to the Editor</h2><p class="small">Ideas for the paper — tell Ganja which ones to keep</p>%s</div>'
-                          % "".join('<div class="ad">%s<div><b>%s</b>%s<div>%s</div></div></div>'
-                                    % (mug(x.get("agent"), "mug sm"), e(x.get("title")), (' <span class="tag">%s</span>' % e(x.get("agent"))) if x.get("agent") else "", e(x.get("text")))
-                                    for x in sug)))
-    pages.append(page("The Garden Token Average", sec("Business", "Markets") + tokens_dow(date), " biz"))
-    pages.append(page("Payroll", sec("Business", "Payroll") + payroll_block(date)
-                      + '<a class="reup-plug biz-plug" href="/roach-clips/">B.I.G\'s Wish-Book of side gigs now runs in <i>Roach Clips</i> ›</a>', " biz"))
-    pages.append(page("Sports", sec("Sports", "The Garden League") + sports_block(date, ed.get("sports")), " sports-page"))
-    pages.append(page("Sports: Scoreboard", sec("Sports", "Standings · Box score") + scoreboard_block(date), " sports-page"))
-    pages.append(page("Classifieds", sec("Classifieds") + '<div class="lower three"><div class="box blotter"><h2>Police Blotter</h2><ul>%s</ul></div>'
-                      '<div class="box jobs"><h2>Job Listings</h2><p class="small">Help wanted — tap one to approve it or handle it yourself</p>%s</div>'
-                      '<div class="box fu-box">%s<a class="reup-plug" href="/re-up/"><b>Want ads</b> are in <i>The Re-Up</i> ›</a></div></div>'
-                      % (blotter or "<li>A quiet night. Nobody got arrested, not even the cron jobs.</li>",
-                         listing_block(ed.get("job_listings"), "job"), followups_block(date) or '<h2>Follow-ups</h2><p class="small">Nothing approved lately.</p>')))
-    pages.append(page("Almanac & Calendar", sec("Almanac", "Calendar · Sky · Season") + coming_block(ed.get("coming_up"))
-                      + almanac_block(date, ed.get("almanac_notes"), ed.get("almanac"))
-                      + '<p class="small center">That\'s the whole pack. <a href="../archive.html">Back issues →</a> · <a href="/">🏠 The Newsstand →</a></p>'))
+            body.append((s_.get("name"), sec("News", s_.get("name")) + '<div class="desk"><h2 class="desk-name">%s</h2><div class="cols">%s</div></div>'
+                         % (e(s_.get("name")), "".join(story(x) for x in s_["stories"])), "", "News"))
+    op = opinion_block(ed)
+    if op:
+        body.append(("Opinion", sec("Opinion", "Editorial · Letters") + op, " opinion", "Opinion"))
+    body.append(("The Garden Token Average", sec("Business", "Markets") + tokens_dow(date), " biz", "Business"))
+    body.append(("Payroll", sec("Business", "Payroll") + payroll_block(date)
+                 + '<a class="reup-plug biz-plug" href="/roach-clips/">B.I.G\'s Wish-Book of side gigs runs in <i>Roach Clips</i> ›</a>', " biz", None))
+    body.append(("Centerfold: The Garden at a Glance", centerfold_block(date), " centerfold", "Centerfold"))
+    body.append(("Sports", sec("Sports", "The Garden League") + sports_block(date, ed.get("sports")), " sports-page", "Sports"))
+    body.append(("Sports: Scoreboard", sec("Sports", "Standings · Box score") + scoreboard_block(date), " sports-page", None))
+    body.append(("Classifieds", sec("Classifieds") + '<div class="lower three"><div class="box blotter"><h2>Police Blotter</h2><ul>%s</ul></div>'
+                 '<div class="box jobs"><h2>Job Listings</h2><p class="small">Help wanted — tap one to approve it or handle it yourself</p>%s</div>'
+                 '<div class="box fu-box">%s<a class="reup-plug" href="/re-up/"><b>Want ads</b> are in <i>The Re-Up</i> ›</a></div></div>'
+                 % (blotter or "<li>A quiet night. Nobody got arrested, not even the cron jobs.</li>",
+                    listing_block(ed.get("job_listings"), "job"), followups_block(date) or '<h2>Follow-ups</h2><p class="small">Nothing approved lately.</p>'), "", "Classifieds"))
+    body.append(("Weather & Almanac", sec("Weather", "Forecast · Sky · Season") + '<div class="wx-page">%s%s</div>' % (weather_block(date), coming_block(ed.get("coming_up")))
+                 + almanac_block(date, ed.get("almanac_notes"), ed.get("almanac")), " weather-page", "Weather"))
+    body.append(("Puzzles & Garden-scopes", sec("Puzzles", "Word search · Garden-scopes") + puzzles_block(ed, date)
+                 + '<p class="small center">That\'s the whole pack. <a href="../archive.html">Back issues →</a> · <a href="/">🏠 The Newsstand →</a></p>', " puzzles", "Puzzles"))
+    goto, index = {}, []
+    for i, (t, _, _, label) in enumerate(body):   # page 1 = the pack, 2 = the front page, then the body
+        goto.setdefault(t, i + 3)
+        if label and label not in [x[0] for x in index]:
+            index.append((label, "Garden news" if label == "News" else t.split(":")[0], i + 3))
+    goto["_index"] = index
+    pages = [page("Front Page", front_page(ed, date, goto), " front-page")] + [page(t, h, x) for t, h, x, _ in body]
     # hard covers = the outside of the rolling-paper pack
     front_cover = page("The Pack", (
         '<div class="gum"><span>GUMMED · DOUBLE WIDE · 1¼ · SLOW BURNING</span></div>'
@@ -701,9 +843,8 @@ def render(ed):
         '<div class="pb-body"><a class="seal" href="/" aria-label="Back to the Newsstand" title="Back to the Newsstand">%s</a><h2 class="pb-title">The Double Wide</h2>'
         '<p>Printed at dawn on The Garden.<br>Compiled by The Gardiner · Rolled by Ganja.</p>'
         '<p class="pb-warn">CAUTION: contents may contain cron jobs, read-only filesystems and strong opinions.</p>'
-        '<div class="codes"><a class="bc-wrap" href="%s" title="TheDoubleWide on GitHub">%s</a><div id="qr" class="qr" data-url="%s"></div></div>'
-        '<p class="pb-code">%s · No. %s · scan me</p>'
-        '<p><a href="../archive.html">Back issues ›</a></p></div>') % (SEAL, REPO, code128_svg(REPO), REPO, date, e(no)), " hardcover back")
+        '%s<p class="pb-code">%s · No. %s</p>'
+        '<p><a href="../archive.html">Back issues ›</a> · <a href="/">🏠 The Newsstand</a></p></div>') % (SEAL, back_codes(REPO, "TheDoubleWide"), date, e(no)), " hardcover back")
     pages = [front_cover] + pages + [back_cover]
     pick = lambda xs, keys: [{k: x.get(k) for k in keys} for x in (xs or []) if isinstance(x, dict)]
     lists = {"job": pick(ed.get("job_listings"), ("title", "agent", "details", "text", "ask", "url")),
@@ -778,7 +919,6 @@ TEMPLATE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8">
   </div><p class="small" id="jm-msg"></p></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="../js/turn-edge.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
 (function () {
   var DATE = "@@DATE@@", LIST = @@JOBS@@;
@@ -805,7 +945,7 @@ TEMPLATE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8">
   if (hasTurn) {
     var d = dims();
     jQuery(book).turn({ width: d.w, height: d.h, display: 'single', acceleration: true, gradients: true, duration: 950,
-      when: { turning: function () { turning = true; }, turned: function (ev, p) { turning = false; label(p); } } });
+      when: { turning: function () { turning = true; }, turned: function (ev, p) { turning = false; label(p); if (window.__repaint) window.__repaint(); } } });
     var start = parseInt((location.hash.match(/page-(\d+)/) || [])[1] || '1', 10);
     if (start > 1) jQuery(book).turn('page', start);
     label(jQuery(book).turn('page'));
@@ -825,7 +965,10 @@ TEMPLATE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 
   // ---- Job Listings, Want Ads and B.I.G's catalog: tap → details → approve / handle / not now ----
   var modal = document.getElementById('jobmodal'), cur = null;
+  var LAST_ST = null;
+  window.__repaint = function () { if (LAST_ST) paintStatus(LAST_ST); if (typeof paintPlans === 'function') paintPlans(); };
   function paintStatus(st) {
+    LAST_ST = st;
     Array.prototype.forEach.call(document.querySelectorAll('.job, .cat-item, .coupon'), function (b) {
       var kind = b.dataset.kind || 'market', key = (kind === 'job' ? '' : kind + ':') + b.dataset.idx, s = st[key];
       var el = b.querySelector('.job-status') || b.querySelector('.cat-more');
@@ -919,8 +1062,13 @@ TEMPLATE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8">
     };
   });
   // ---- back cover QR code (the barcode beside it encodes the same link) ----
-  var qrEl = document.getElementById('qr');
-  if (qrEl && window.qrcode) { var q = qrcode(0, 'M'); q.addData(qrEl.dataset.url); q.make(); qrEl.innerHTML = q.createSvgTag({ cellSize: 3, margin: 2, scalable: true }); }
+  // ---- links that turn the book to a page (front-page index, "story on the … page"), and word-search taps ----
+  document.addEventListener('click', function (ev) {
+    var g = ev.target.closest && ev.target.closest('[data-goto]');
+    if (g && g.dataset.goto && hasTurn) { ev.preventDefault(); ev.stopPropagation(); jQuery(book).turn('page', +g.dataset.goto); return; }
+    var c = ev.target.closest && ev.target.closest('.ws td');
+    if (c) c.classList.toggle('on');
+  }, true);
   load();
 })();
 </script>@@SCRIPTS@@</body></html>"""

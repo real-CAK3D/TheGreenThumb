@@ -15,23 +15,27 @@
   function all() { return entries.concat(mine); }
 
   // ---------------- search: turn to the page and light up the listing
-  var lastHit = null;
+  // the book only keeps nearby pages loaded, so search uses the index of every listing printed with the page
+  var INDEX = window.GT_INDEX || [], hitId = null, hitNo = -1, lastTerm = '';
   q.addEventListener('keydown', function (e) { if (e.key === 'Enter') find(); });
   q.addEventListener('search', find);
+  function light() {
+    Array.prototype.forEach.call(document.querySelectorAll('.yp-card.hit'), function (c) { c.classList.remove('hit'); });
+    if (!hitId) return;
+    var c = document.querySelector('.yp-card[data-id="' + hitId + '"]');
+    if (c) { c.classList.add('hit'); setTimeout(function () { c.scrollIntoView({ block: 'center', behavior: 'smooth' }); }, 150); }
+  }
   function find() {
     var term = (q.value || '').toLowerCase().trim();
-    if (lastHit) lastHit.classList.remove('hit');
-    if (!term) { say(''); return; }
-    var cards = Array.prototype.slice.call(document.querySelectorAll('.yp-card'));
-    var hits = cards.filter(function (c) { return (c.dataset.find || '').indexOf(term) >= 0; });
-    if (!hits.length) { say('Nothing matches "' + q.value + '".'); return; }
-    var start = lastHit && hits.indexOf(lastHit) >= 0 ? (hits.indexOf(lastHit) + 1) % hits.length : 0, c = hits[start];
-    var pages = Array.prototype.slice.call(book.querySelectorAll('.pg')), n = pages.indexOf(c.closest('.pg')) + 1;
-    if (window.jQuery && jQuery.fn.turn && n > 0) jQuery(book).turn('page', n);
-    c.classList.add('hit'); lastHit = c;
-    setTimeout(function () { c.scrollIntoView({ block: 'center', behavior: 'smooth' }); }, 700);
-    say(hits.length > 1 ? 'Match ' + (start + 1) + ' of ' + hits.length + ' — press Enter for the next.' : '1 match.');
+    if (!term) { hitId = null; light(); say(''); return; }
+    var hits = INDEX.filter(function (x) { return (x.find || '').indexOf(term) >= 0; });
+    if (!hits.length) { hitId = null; light(); say('Nothing matches "' + q.value + '".'); return; }
+    hitNo = term === lastTerm ? (hitNo + 1) % hits.length : 0; lastTerm = term;
+    var h = hits[hitNo]; hitId = h.id;
+    if (window.jQuery && jQuery.fn.turn) { if (jQuery(book).turn('page') === h.page) light(); else jQuery(book).turn('page', h.page); } else light();
+    say((hits.length > 1 ? 'Match ' + (hitNo + 1) + ' of ' + hits.length + ' — press Enter for the next. ' : '') + h.name);
   }
+  if (window.jQuery && jQuery.fn.turn) jQuery(book).bind('turned', function () { setTimeout(function () { fill(); light(); }, 50); });
 
   // ---------------- crypto (browser only)
   function derive(pass, salt) {
