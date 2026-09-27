@@ -846,7 +846,7 @@ def render(ed):
         '<p>Printed at dawn on The Garden.<br>Compiled by The Gardiner · Rolled by Ganja.</p>'
         '<p class="pb-warn">CAUTION: contents may contain cron jobs, read-only filesystems and strong opinions.</p>'
         '%s<p class="pb-code">%s · No. %s</p>'
-        '<p><a href="../archive.html">Back issues ›</a> · <a href="/">🏠 The Corner Chronicle</a></p></div>') % (SEAL, back_codes(REPO, "TheDoubleWide"), date, e(no)), " hardcover back")
+        '<p><a href="../archive.html">Back issues ›</a></p></div>') % (SEAL, back_codes(REPO, "TheDoubleWide"), date, e(no)), " hardcover back")
     pages = [front_cover] + pages + [back_cover]
     pick = lambda xs, keys: [{k: x.get(k) for k in keys} for x in (xs or []) if isinstance(x, dict)]
     lists = {"job": pick(ed.get("job_listings"), ("title", "agent", "details", "text", "ask", "url")),
