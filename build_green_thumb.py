@@ -85,7 +85,7 @@ def build():
                 index.append({"id": x.get("id"), "page": starts[g] + n // PER_PAGE, "name": x.get("name"),
                               "find": " ".join(str(x.get(k) or "") for k in ("name", "device", "category", "url", "ip", "ssh", "tailscale", "notes")).lower()})
             pages.append(page(title, '<h2 class="yp-letter">%s</h2><div class="yp-grid">%s</div>' % (e(title), "".join(card(x) for x in part))))
-    seal = '<a class="seal" href="/" aria-label="Back to the Newsstand" title="Back to the Newsstand">%s</a>' % SEAL
+    seal = '<a class="seal" href="/" aria-label="Back to The Corner Chronicle" title="Back to The Corner Chronicle">%s</a>' % SEAL
     front = page("The Green Thumb", (
         '<div class="gum"><span>ORGANIC · THE GARDEN DIRECTORY · %d LISTINGS</span></div>'
         '<div class="pc-top">%s<div class="ear">N° %d<br>%s<br><b>%s</b><br>%s</div></div>'
@@ -97,7 +97,7 @@ def build():
         '<div class="gum"><span>THE GREEN THUMB · THE GARDEN</span></div>'
         '<div class="pb-body">%s<h2 class="pb-title">The Green Thumb</h2>'
         '<p>Kept current by the Garden\'s agents from the vault.<br>Passwords live only in your locker — scrambled on your device, never in the book.</p>'
-        '%s<p class="pb-code">Updated %s</p><p><a href="/">🏠 The Newsstand</a></p></div>')
+        '%s<p class="pb-code">Updated %s</p><p><a href="/">🏠 The Corner Chronicle</a></p></div>')
         % (seal, back_codes("https://github.com/real-CAK3D/TheGreenThumb", "TheGreenThumb"), today.isoformat()), " hardcover back")
     toolbar = ('<div class="gt-tools"><input id="yp-q" type="search" placeholder="Search: a name, device, IP, port…" aria-label="Search">'
                '<button type="button" class="btn" id="yp-lock">🔒 Unlock passwords</button>'

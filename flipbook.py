@@ -820,7 +820,7 @@ def render(ed):
     body.append(("Weather & Almanac", sec("Weather", "Forecast · Sky · Season") + '<div class="wx-page">%s%s</div>' % (weather_block(date), coming_block(ed.get("coming_up")))
                  + almanac_block(date, ed.get("almanac_notes"), ed.get("almanac")), " weather-page", "Weather"))
     body.append(("Puzzles & Garden-scopes", sec("Puzzles", "Word search · Garden-scopes") + puzzles_block(ed, date)
-                 + '<p class="small center">That\'s the whole pack. <a href="../archive.html">Back issues →</a> · <a href="/">🏠 The Newsstand →</a></p>', " puzzles", "Puzzles"))
+                 + '<p class="small center">That\'s the whole pack. <a href="../archive.html">Back issues →</a> · <a href="/">🏠 The Corner Chronicle →</a></p>', " puzzles", "Puzzles"))
     goto, index = {}, []
     for i, (t, _, _, label) in enumerate(body):   # page 1 = the pack, 2 = the front page, then the body
         goto.setdefault(t, i + 3)
@@ -833,7 +833,7 @@ def render(ed):
     # hard covers = the outside of the rolling-paper pack
     front_cover = page("The Pack", (
         '<div class="gum"><span>GUMMED · DOUBLE WIDE · 1¼ · SLOW BURNING</span></div>'
-        '<div class="pc-top"><a class="seal" href="/" aria-label="Back to the Newsstand" title="Back to the Newsstand">%s</a><div class="ear">No. %s<br>%s<br><b>%s</b><br>%s</div></div>'
+        '<div class="pc-top"><a class="seal" href="/" aria-label="Back to The Corner Chronicle" title="Back to The Corner Chronicle">%s</a><div class="ear">No. %s<br>%s<br><b>%s</b><br>%s</div></div>'
         '<div class="flag"><div class="est">EST. 2026 · THE GARDEN · LEWISTON, ME</div><h1>The Double<br>Wide</h1>'
         '<div class="motto">“All the news that\'s fit to roll”</div></div>'
         '<div class="pc-band"><span>1¼ SIZE</span><span>32 LEAVES</span><span>SLOW BURNING</span></div>'
@@ -842,11 +842,11 @@ def render(ed):
         % (SEAL, e(no), d.strftime("%a"), d.strftime("%b %-d"), d.strftime("%Y"), e(head.get("title"))), " hardcover")
     back_cover = page("Back of the Pack", (
         '<div class="gum"><span>MADE IN THE GARDEN · ROLLED BY GANJA</span></div>'
-        '<div class="pb-body"><a class="seal" href="/" aria-label="Back to the Newsstand" title="Back to the Newsstand">%s</a><h2 class="pb-title">The Double Wide</h2>'
+        '<div class="pb-body"><a class="seal" href="/" aria-label="Back to The Corner Chronicle" title="Back to The Corner Chronicle">%s</a><h2 class="pb-title">The Double Wide</h2>'
         '<p>Printed at dawn on The Garden.<br>Compiled by The Gardiner · Rolled by Ganja.</p>'
         '<p class="pb-warn">CAUTION: contents may contain cron jobs, read-only filesystems and strong opinions.</p>'
         '%s<p class="pb-code">%s · No. %s</p>'
-        '<p><a href="../archive.html">Back issues ›</a> · <a href="/">🏠 The Newsstand</a></p></div>') % (SEAL, back_codes(REPO, "TheDoubleWide"), date, e(no)), " hardcover back")
+        '<p><a href="../archive.html">Back issues ›</a> · <a href="/">🏠 The Corner Chronicle</a></p></div>') % (SEAL, back_codes(REPO, "TheDoubleWide"), date, e(no)), " hardcover back")
     pages = [front_cover] + pages + [back_cover]
     pick = lambda xs, keys: [{k: x.get(k) for k in keys} for x in (xs or []) if isinstance(x, dict)]
     lists = {"job": pick(ed.get("job_listings"), ("title", "agent", "details", "text", "ask", "url")),
@@ -894,7 +894,7 @@ TEMPLATE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <div class="pack">
   <div class="gum"><span>@@GUM@@</span></div>
   <header class="cover">
-    <a class="seal" href="/" aria-label="Back to the Newsstand" title="Back to the Newsstand">@@SEAL@@</a>
+    <a class="seal" href="/" aria-label="Back to The Corner Chronicle" title="Back to The Corner Chronicle">@@SEAL@@</a>
     <div class="flag"><div class="est">@@EST@@</div><h1>@@PAPER@@</h1>
       <div class="motto">@@MOTTO@@</div></div>
     <div class="ear">No. @@NO@@<br>@@DOW@@<br><b>@@MD@@</b><br>@@YEAR@@</div>

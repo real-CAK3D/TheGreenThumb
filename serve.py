@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The Green Thumb web server (Tailscale-only; mounted at /green-thumb/ under the Newsstand).
+"""The Green Thumb web server (Tailscale-only; mounted at /green-thumb/ under The Corner Chronicle).
 
   GET/PUT /api/yp/vault      the password locker — ENCRYPTED in the browser with CAK3D's passphrase; the server never sees a password
   GET/POST /api/yp/entries   listings CAK3D added himself (no passwords)

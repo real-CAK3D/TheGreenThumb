@@ -103,7 +103,7 @@
 
   function unlock() {
     if (key) { lock(); return; }
-    if (!window.crypto || !crypto.subtle) { say('The locker needs the secure app address — open it from the Newsstand app.'); return; }
+    if (!window.crypto || !crypto.subtle) { say('The locker needs the secure app address — open it from The Corner Chronicle app.'); return; }
     var fresh = !vault || !vault.ct;
     dialog(fresh ? 'Make your locker passphrase' : 'Unlock The Green Thumb', fresh ? [
       { type: 'note', text: 'Pick a passphrase only you know (a few words is best). It scrambles your passwords on this device; the Garden never sees it. <b>If you forget it, the saved passwords can\'t be recovered.</b>' },
