@@ -108,3 +108,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 def run(handler_cls, site, host, port):
     handler_cls.HOST_ORIGIN = "http://%s:%d" % (host, port)
     http.server.ThreadingHTTPServer((host, port), functools.partial(handler_cls, directory=os.path.abspath(site))).serve_forever()
+
+
+WALLET = os.path.expanduser("~/.hermes/garden/tip-sheet/private/wallet.json")
+
+
+def wallet_tx(fn):
+    """Garden Bucks (pretend money) are one wallet shared by Dime Bags and The Corner Chronicle's seed counter: every change runs
+    under a file lock so the two servers and the nightly settle never step on each other. fn(wallet) may edit it; its result is returned."""
+    import fcntl
+    os.makedirs(os.path.dirname(WALLET), exist_ok=True)
+    with open(WALLET + ".lock", "w") as lk:
+        fcntl.flock(lk, fcntl.LOCK_EX)
+        w = jload(WALLET, {"balance": 1000, "bets": []})
+        out = fn(w)
+        jsave(WALLET, w)
+        return out
