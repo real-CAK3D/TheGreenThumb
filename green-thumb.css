@@ -740,3 +740,8 @@ body.pub-gt .pb-title { font-family: Rye, serif; color: var(--hemp); -webkit-tex
 body.pub-gt .pb-body, body.pub-gt .pb-body a { color: var(--hemp); }
 body.pub-ru .pb-title { font-family: Rye, serif; color: var(--kraft-ink); -webkit-text-stroke: 0; text-shadow: none; }
 body.pub-ru .pb-body, body.pub-ru .pb-body a { color: var(--kraft-ink); }
+/* the page counter wears its own dark tag, so it reads on every paper and every cover */
+.pager .where, body.on-cover .pager .where { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; margin: 0 auto; padding: 5px 14px 6px;
+  border-radius: 14px; background: rgba(22,15,10,.86) !important; color: #f5eedb !important; box-shadow: 0 2px 6px rgba(0,0,0,.35); }
+.pager .dots button, body.on-cover .pager .dots button { border-color: #f5eedb !important; background: transparent; }
+.pager .dots button.on, body.on-cover .pager .dots button.on { background: #f5eedb !important; }

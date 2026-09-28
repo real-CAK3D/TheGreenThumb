@@ -844,7 +844,7 @@ def render(ed):
     body.append(("Weather & Almanac", sec("Weather", "Forecast · Sky · Season") + '<div class="wx-page">%s%s</div>' % (weather_block(date), coming_block(ed.get("coming_up")))
                  + almanac_block(date, ed.get("almanac_notes"), ed.get("almanac")), " weather-page", "Weather"))
     body.append(("Puzzles & Garden-scopes", sec("Puzzles", "Word search · Garden-scopes") + puzzles_block(ed, date)
-                 + '<p class="small center">That\'s the whole pack. <a href="../archive.html">Back issues →</a> · <a href="/">🏠 The Corner Chronicle →</a></p>', " puzzles", "Puzzles"))
+                 + '<p class="small center">That\'s the whole pack. <a href="../archive.html">Back issues →</a></p>', " puzzles", "Puzzles"))
     goto, index = {}, []
     for i, (t, _, _, label) in enumerate(body):   # page 1 = the pack, 2 = the front page, then the body
         goto.setdefault(t, i + 3)
@@ -910,7 +910,7 @@ TEMPLATE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>@@PAPER@@ — @@DATE_LONG@@</title>
 <link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#2a1a10">
-<link rel="icon" href="/icons/icon-192.png"><link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="icon" href="/icons/icon-192.png"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><script src="/app.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Rye&family=Luckiest+Guy&family=UnifrakturMaguntia&family=Bangers&family=Patrick+Hand+SC&family=Oswald:wght@400;600;700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
