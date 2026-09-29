@@ -113,7 +113,7 @@ def run(handler_cls, site, host, port):
 WALLET = os.path.expanduser("~/.hermes/garden/tip-sheet/private/wallet.json")
 
 
-def wallet_tx(fn):
+def wallet_tx(fn, note=""):
     """Garden Bucks (pretend money) are one wallet shared by Dime Bags and The Corner Chronicle's seed counter: every change runs
     under a file lock so the two servers and the nightly settle never step on each other. fn(wallet) may edit it; its result is returned."""
     import fcntl
@@ -121,6 +121,11 @@ def wallet_tx(fn):
     with open(WALLET + ".lock", "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
         w = jload(WALLET, {"balance": 1000, "bets": []})
+        before = w.get("balance", 0)
         out = fn(w)
+        if w.get("balance", 0) != before:   # the ledger the register and the cash box show
+            w.setdefault("ledger", []).append({"at": dt.datetime.now().isoformat(timespec="seconds"), "delta": w["balance"] - before,
+                                               "balance": w["balance"], "note": note or "Garden Bucks"})
+            w["ledger"] = w["ledger"][-300:]
         jsave(WALLET, w)
         return out
